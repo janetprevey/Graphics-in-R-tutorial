@@ -129,7 +129,7 @@ newmap <- ptmap + scale_fill_viridis()
 newmap
 
 
-### Using colors from teh colorRamps Package:
+### Using colors from the colorRamps Package:
 
 newmap <- ptmap  +  scale_fill_gradientn(colours= (blue2green2red(23)))
 newmap
@@ -176,7 +176,8 @@ bhisto <- histo + scale_fill_viridis(discrete=TRUE, guide=FALSE)
 bhisto
 ### Add better labels, remove the background grid, and change the x axis scale so numbers are visible
 
-chisto <- bhisto + labs(x="Year",y= "Number of plots sampled") + theme(panel.grid.major=element_blank(),panel.grid.minor=element_blank()) + theme(axis.text.x=element_text(angle = -65, hjust = 0))
+chisto <- bhisto + labs(x="Year",y= "Number of plots sampled") + theme(panel.grid.major=element_blank(),panel.grid.minor=element_blank())+ theme(axis.text.x=element_text(angle = -65, hjust = 0))
+
 chisto
 
 
@@ -287,7 +288,7 @@ sum <- scat4 + labs(x=expression("Summer temperature "( degree*C)),
                     y="DOY Flowering") + theme(panel.grid.major=element_blank(),panel.grid.minor=element_blank()) 
 sum 
 
-###########  We could also look at the relationships between spring and winter temperatures as well....
+###########  We could also look at the relationships between other seasonal temperatures as well....
 
 
 ####### Winter - let's put the legend back in for this one
@@ -337,7 +338,7 @@ grid.arrange(winter, sprg, sum, fll, nrow=2, ncol = 2)
 ########### Save high resolution copies of your images, after figuring out the correct sizing using the 'Export' option under 'Plots'
 ########### 300 dpi or greater is good for publication quality graphs
 
-### place this line of the code befor the line of code that displays the graphics you would like to save 
+### place this line of the code before the line of code that displays the graphics you would like to save 
 
 tiff("Example.tiff", width = 12.9, height = 6.30, pointsize = 12, units = 'in', res = 300) ##this will save a .tiff file to your working directory
 
