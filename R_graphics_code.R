@@ -193,8 +193,8 @@ bhisto
 # Add better labels, remove the background grid, and change the x axis scale 
 # so the numbers are visible
 
-chisto <- bhisto + labs(x="Year",y= "Number of plots sampled") 
-          + theme(panel.grid.major=element_blank(),panel.grid.minor=element_blank())+ 
+chisto <- bhisto + labs(x="Year",y= "Number of plots sampled") + 
+          theme(panel.grid.major=element_blank(),panel.grid.minor=element_blank())+ 
           theme(axis.text.x=element_text(angle = -65, hjust = 0))
 chisto
 
