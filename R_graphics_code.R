@@ -68,10 +68,10 @@ mapUSA <- borders("state", colour="gray", fill="white", size = 0.1)
 mp <- ggplot() +  mapUSA + xlab("Longitude") + ylab("Latitude")     
 mp
 
-# Here are some other background map and zoming options using the package 'ggmap'
-# We use the 'get_map' command to grab rasters from the internet to make the background map
+# Here are some other background map and zooming options using the package 'ggmap'
+# We use the 'get_stamenmap' command to grab rasters from the internet to make the background map
 # Specify the bounding box of your map with:
-#'location <- c(left longitude, bottom latitude, right longitude, upper latitude)
+# location <- c(left longitude, bottom latitude, right longitude, upper latitude)
 
 myMap <- get_stamenmap(location<- c(-132,16,-47,56), zoom = 5, maptype="terrain",
           crop=TRUE) ## smaller zoom values require fewer tiles but show less detail
@@ -163,7 +163,9 @@ dat$year <-factor(dat$year)
 
 # Try again with year as a discrete variable
 
-ptmap <- ggmap(myMap) + geom_point(data=dat, aes(x=long, y=lat, fill = year), pch = 21, color = "black", stroke = 1.1, size = 4.2, alpha = 0.8) 
+ptmap <- ggmap(myMap) + geom_point(data=dat, aes(x=long, y=lat, fill = year), 
+                                   pch = 21, color = "black", stroke = 1.1, 
+                                   size = 4.2, alpha = 0.8) 
 ptmap
 
 ### That looks very bad......lets customize the colors!
@@ -229,7 +231,8 @@ newmap
 
 ## Add correct labels 
 
-scdmap <- newmap + labs(x="Latitude",y= "Longitude", fill = "Summer precip.\n(mm)", size = "Percent Cover") 
+scdmap <- newmap + labs(x="Latitude",y= "Longitude", fill = "Summer precip.\n(mm)", 
+                        size = "Percent Cover") 
 scdmap
 
 ## Tweak the legend positions to suit our preference
@@ -238,7 +241,7 @@ scdmap
 
 thrdmap <- scdmap + theme(strip.text.x = element_blank(),
                strip.background = element_rect(colour="none", fill="none"),
-               legend.position=c(.19,.19))
+               legend.position=c(.19,.4))
 
 thrdmap
 
@@ -251,7 +254,7 @@ frthmap <- thrdmap + theme(legend.background = element_rect(fill=NA, size=0.5)) 
 frthmap 
 
 ## And for the last example with this data set - let's look at how the day of year 
-## when open Salal flowers were observed on a plot relates to mean summer temperature
+## when open Salal flowers were observed on a plot relates to mean seasonal temperature
 
 ## create a new dataframe with only plots with flower observations
 
@@ -302,7 +305,7 @@ scat3
 ## We can also alter the breaks and limits for the axes... 
 ## Below we can change the y axis to start near the beginning of June (DOY 152) 
 ## and go through the end of August (DOY 243)
-## we can also use the breaks argument to dsignate how often the axes are labeled 
+## we can also use the breaks argument to designate how often the axes are labeled 
 ## (every 10 units here)
 
 scat4 <- scat3 + scale_y_continuous(breaks=seq(150,243,by=10), limits=c(152,243)) + 
@@ -310,8 +313,7 @@ scat4 <- scat3 + scale_y_continuous(breaks=seq(150,243,by=10), limits=c(152,243)
 
 scat4
 
-## Add better labels, remove the background grid, and change the x axis scale so 
-## numbers are visible
+## Add better labels, remove the background grid
 
 sum <- scat4 + labs(x=expression("Summer temperature "( degree*C)),
        y="DOY Flowering") + theme(panel.grid.major=element_blank(),
@@ -391,12 +393,13 @@ tiff("Example.tiff", width = 12.9, height = 6.30, pointsize = 12, units = 'in', 
 
 grid.arrange(fthmap,sprg,ncol = 2) ## then the line of code that displays the graphs
 
-dev.off()  ## now the displayed graphics are saved to a file with the above name file
+dev.off()  ## now the displayed graphics are saved to a file with the above named file
 
 #############################################################################################################################################################################
 ###############################################################################################################################################################################
 
-## A very brief introduction to visualizing raster data in R (adapted from code by Scott W. Anderson USGS)
+## A very brief introduction to visualizing raster data in R 
+## Adapted from code by Scott W. Anderson - USGS Washington Water Science Center
 
 install.packages(c("ggspatial", "prism", "raster"))
 
@@ -404,8 +407,7 @@ library(prism)
 library(raster)
 library(ggspatial)
 
-## We can download precipitation data from PRISM at a 4km data using the prism package
-## Lets look at monthly precipitation data for January 1980 and 1981
+## We can download temperature data from PRISM at a 4km data using the prism package
 ## More information about the prism package here: https://cran.r-project.org/web/packages/prism/prism.pdf 
 
 ## Tell prism where to store the rasters
@@ -414,7 +416,7 @@ options(prism.path = "C:\\Users\\jprevey\\Desktop\\Prism")
 ## Download January mean temperature for 1990 through 2000
 get_prism_monthlys(type="tmean", years = 1990:2000, mon = 1, keepZip=FALSE)
 
-## Show R where to get the 1990 .bil file to display as a raster 
+## Show R where to get the .bil files to display as a rasters 
 prism1990 = "C:\\Users\\jprevey\\Desktop\\Prism\\PRISM_tmean_stable_4kmM3_199001_bil\\PRISM_tmean_stable_4kmM3_199001_bil.bil"
 prism2000 = "C:\\Users\\jprevey\\Desktop\\Prism\\PRISM_tmean_stable_4kmM3_200001_bil\\PRISM_tmean_stable_4kmM3_200001_bil.bil"
 
@@ -434,16 +436,17 @@ ggplot() + layer_spatial(tRas90NW) +
   annotation_north_arrow() +
   labs(title = 'January 1990 temperature') 
 
-## Now suppose you want to compare January temperatures across teh decade
+## Now suppose you want to compare January temperatures across the decade
 
 tRas00 = raster(prism2000)
 tRas00NW = crop(tRas00, extent(c(-125, -105, 30, 52)))
 
-# Graph the raster quickly using base r graphics
+# Graph the 2000 raster quickly using base r graphics
 
 plot(tRas00NW)
 
-# Use basic r commands to get the difference in monthley mean temperatures between 2000 and 1990
+# Use basic r commands to get the difference in monthly mean temperatures 
+# between 2000 and 1990
 
 tRasdiff <- tRas00NW - tRas90NW
 
